@@ -3,8 +3,8 @@ import pandas as pd
 import os
 from io import BytesIO
 
-def process_excel_file(file_name):
-    df = pd.read_excel(file_name)
+def process_excel_file(file):
+    df = pd.read_excel(file)
     group_1 = ['văn phòng', 'tổng vụ', 'cơ điện', 'kho dán hộp', 'kho vật tư', 'xưởng a', 'mặt giày 1', 'xưởng b', 'qc 1']
     df['Group'] = df['Xưởng'].copy()
     for i,item in enumerate(df['Group']):
