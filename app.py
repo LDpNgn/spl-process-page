@@ -3,7 +3,7 @@ import pandas as pd
 import os
 from io import BytesIO
 
-def process_excel_file(df, file_name):
+def process_excel_file(file_name):
     df = pd.read_excel(file_name)
     group_1 = ['văn phòng', 'tổng vụ', 'cơ điện', 'kho dán hộp', 'kho vật tư', 'xưởng a', 'mặt giày 1', 'xưởng b', 'qc 1']
     df['Group'] = df['Xưởng'].copy()
@@ -33,7 +33,7 @@ if uploaded_file is not None:
         st.write(df.head())
 
         # Gọi hàm xử lý
-        processed_df = process_excel_file(df, file_name)
+        processed_df = process_excel_file(file_name)
 
         # Ghi kết quả ra file Excel mới (trong RAM)
         output = BytesIO()
