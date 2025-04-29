@@ -30,6 +30,7 @@ if uploaded_file is not None:
     try:
         # Đọc file vào DataFrame
         df = pd.read_excel(uploaded_file)
+        st.write(df.head())
 
         # Gọi hàm xử lý
         processed_df = process_excel_file(df, file_name)
