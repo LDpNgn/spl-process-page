@@ -30,10 +30,10 @@ if uploaded_file is not None:
     try:
         # Đọc file vào DataFrame
         df = pd.read_excel(uploaded_file)
-        st.write(df.head())
+        # st.write(df.head())
 
         # Gọi hàm xử lý
-        processed_df = process_excel_file(file_name)
+        processed_df = process_excel_file(uploaded_file)
 
         # Ghi kết quả ra file Excel mới (trong RAM)
         output = BytesIO()
