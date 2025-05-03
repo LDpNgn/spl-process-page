@@ -3,23 +3,44 @@ import pandas as pd
 import os
 from io import BytesIO
 
-def process_excel_file(file):
-    df = pd.read_excel(file)
-    group_1 = ['văn phòng', 'tổng vụ', 'cơ điện', 'kho dán hộp', 'kho vật tư', 'xưởng a', 'mặt giày 1', 'xưởng b', 'qc 1']
-    df['Group'] = df['Xưởng'].copy()
-    for i,item in enumerate(df['Group']):
-        if item.lower() in group_1:
-            df.loc[i, 'Group'] = 1
-        else:
-            df.loc[i, 'Group'] = 2
+def retype(x):
+    if isinstance(x, str):
+        return 0
+    return x
 
-    df = df.sort_values(by = ['Group', 'Xưởng'])
+def process_excel_file(file):
+
+    # Read the Excel file into a DataFrame
+    df = pd.read_excel(file)
+
+    # Convert all string values in n_empl_df to lowercase
+    df = df.applymap(lambda x: x.lower() if isinstance(x, str) else x)
+    df.columns = df.columns.str.lower()
+
+    # retype str to int
+    for i in range(3,8):
+        df.iloc[:, i] = df.iloc[:, i].apply(retype)
+
+    # copute sum of all columns from 3 to 7
+    df['tổng cộng'] = df.iloc[:, 3:7].sum(axis=1) 
+    
+    # set group 1 & 2
+    group_2 = ['chuyển giao', 'phòng mẫu', 'mặt giày 2', 'kho đế', 'gia công đế', 'xưởng c', 'qc 2']
+    df['group'] = df['xưởng'].copy()
+    for i,item in enumerate(df['group']):
+        if item.lower() in group_2:
+            df.loc[i, 'group'] = 2
+        else:
+            df.loc[i, 'group'] = 1
+
+    df = df.sort_values(by = ['group', 'xưởng'])
     df.to_csv('sorted_qr_lunch.csv', index=False, encoding='utf-8')
     
     return df
 
 # Giao diện Streamlit
 st.title("Excel Processor")
+st.header("Sorted 'BÁO CƠM'")
 
 uploaded_file = st.file_uploader("Upload file .xlsx", type=["xlsx"])
 
@@ -50,3 +71,5 @@ if uploaded_file is not None:
         )
     except Exception as e:
         st.error(f"Lỗi khi xử lý file: {e}")
+
+st.header("Merged 'BÁO BIỂU'")
