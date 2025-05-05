@@ -2,41 +2,79 @@ import streamlit as st
 import pandas as pd
 import os
 from io import BytesIO
+from io import StringIO
 
 def retype(x):
     if isinstance(x, str):
         return 0
     return x
 
+# def process_excel_file(file):
+
+#     # Read the Excel file into a DataFrame
+#     df = pd.read_excel(file, sheet_name="Câu trả lời biểu mẫu 1", engine='openpyxl')
+
+#     # Convert all string values in n_empl_df to lowercase
+#     df = df.applymap(lambda x: x.lower() if isinstance(x, str) else x)
+#     df.columns = df.columns.str.lower()
+
+#     # retype str to int
+#     for i in range(3,8):
+#         df.iloc[:, i] = df.iloc[:, i].apply(retype)
+
+#     # copute sum of all columns from 3 to 7
+#     df['tổng cộng'] = df.iloc[:, 3:7].sum(axis=1) 
+    
+#     # set group 1 & 2
+#     group_2 = ['chuyển giao', 'phòng mẫu', 'mặt giày 2', 'kho đế', 'gia công đế', 'xưởng c', 'qc 2']
+#     df['group'] = df['xưởng'].copy()
+#     for i,item in enumerate(df['group']):
+#         if item.lower() in group_2:
+#             df.loc[i, 'group'] = 2
+#         else:
+#             df.loc[i, 'group'] = 1
+
+#     df = df.sort_values(by = ['group', 'xưởng'])
+#     df.to_csv('sorted_qr_lunch.csv', index=False, encoding='utf-8')
+    
+#     return df
+
+
+
 def process_excel_file(file):
 
-    # Read the Excel file into a DataFrame
-    df = pd.read_excel(file)
+    # Save to a buffer
+    buffer = StringIO()
+    file.to_csv(buffer, index=False)
+    buffer.seek(0)
+
+    # Use the buffer as input
+    new_df = pd.read_csv(buffer)
 
     # Convert all string values in n_empl_df to lowercase
-    df = df.applymap(lambda x: x.lower() if isinstance(x, str) else x)
-    df.columns = df.columns.str.lower()
+    new_df = new_df.applymap(lambda x: x.lower() if isinstance(x, str) else x)
+    new_df.columns = new_df.columns.str.lower()
 
     # retype str to int
     for i in range(3,8):
-        df.iloc[:, i] = df.iloc[:, i].apply(retype)
+        new_df.iloc[:, i] = new_df.iloc[:, i].apply(retype)
 
     # copute sum of all columns from 3 to 7
-    df['tổng cộng'] = df.iloc[:, 3:7].sum(axis=1) 
+    new_df['tổng cộng总共'] = new_df.iloc[:, 3:7].sum(axis=1) 
     
     # set group 1 & 2
     group_2 = ['chuyển giao', 'phòng mẫu', 'mặt giày 2', 'kho đế', 'gia công đế', 'xưởng c', 'qc 2']
-    df['group'] = df['xưởng'].copy()
-    for i,item in enumerate(df['group']):
+    new_df['group'] = new_df['xưởng厂别'].copy()
+    for i,item in enumerate(new_df['group']):
         if item.lower() in group_2:
-            df.loc[i, 'group'] = 2
+            new_df.loc[i, 'group'] = 2
         else:
-            df.loc[i, 'group'] = 1
+            new_df.loc[i, 'group'] = 1
 
-    df = df.sort_values(by = ['group', 'xưởng'])
-    df.to_csv('sorted_qr_lunch.csv', index=False, encoding='utf-8')
+    new_df = new_df.sort_values(by = ['Dấu thời gian', 'group', 'xưởng厂别'])
+    new_df.to_csv('sorted_qr_lunch.csv', index=False, encoding='utf-8')
     
-    return df
+    return new_df
 
 # Giao diện Streamlit
 st.title("Excel Processor")
