@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import os
+import io
 from io import BytesIO
 from io import StringIO
 
@@ -44,7 +45,7 @@ def retype(x):
 def process_excel_file(file):
 
     # Save to a buffer
-    buffer = StringIO()
+    buffer = io.StringIO()
     file.to_csv(buffer, index=False)
     buffer.seek(0)
 
