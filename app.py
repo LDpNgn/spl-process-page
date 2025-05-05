@@ -93,7 +93,7 @@ if uploaded_file is not None:
         # st.write(df.head())
 
         # Gọi hàm xử lý
-        processed_df = process_excel_file(uploaded_file)
+        processed_df = process_excel_file(df) # uploaded_file
 
         # Ghi kết quả ra file Excel mới (trong RAM)
         output = BytesIO()
