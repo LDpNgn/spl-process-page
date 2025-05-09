@@ -185,7 +185,7 @@ def create_new_cols(df):
     df['ca ăn (trưa, chiều)'] = df['dấu thời gian'] .copy()
     for i, item in enumerate(df['ca ăn (trưa, chiều)']):
         time = pd.to_datetime(item, format='%H:%M', errors='coerce').time()
-        if pd.to_datetime('12:00', format='%H:%M').time() < time < pd.to_datetime('16:00', format='%H:%M').time():
+        if pd.to_datetime('12:00', format='%H:%M').time() < time < pd.to_datetime('15:00', format='%H:%M').time(): # 12-14h
             df.loc[i, 'ca ăn (trưa, chiều)'] = 2
         else:
             df.loc[i, 'ca ăn (trưa, chiều)'] = 1
