@@ -41,7 +41,8 @@ if mode == "📄 Sorted BÁO CƠM":
             )
 
         except Exception as e:
-            st.error(f"❌ Lỗi khi xử lý file Excel: {e}")
+            # st.error(f"❌ Lỗi khi xử lý file Excel: {e}")
+            st.exception(e)
 
 # --- Merged Mode ---
 elif mode == "📊 Merged BÁO CƠM + BÁO BIỂU":
