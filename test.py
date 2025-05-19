@@ -14,7 +14,7 @@ mode = st.radio("🔧 Chọn chế độ xử lý:", ["📄 Sorted BÁO CƠM", "
 if mode == "📄 Sorted BÁO CƠM":
     st.header("1️⃣ Sorted 'BÁO CƠM'")
     uploaded_file = st.file_uploader("📁 Chọn file Excel báo cơm", type=["xlsx", "xls"], key="bao_com")
-
+    st.stop() # mini test
     if uploaded_file is not None:
         try:
             excel_file = pd.ExcelFile(uploaded_file)
