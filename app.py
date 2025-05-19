@@ -13,7 +13,14 @@ mode = st.radio("🔧 Chọn chế độ xử lý:", ["📄 Sorted BÁO CƠM", "
 # --- Sorted Mode ---
 if mode == "📄 Sorted BÁO CƠM":
     st.header("1️⃣ Sorted 'BÁO CƠM'")
-    uploaded_file = st.file_uploader("📁 Chọn file Excel báo cơm", type=["xlsx", "xls"], key="bao_com", accept_multiple_files=False)
+
+    import streamlit as st
+
+    container = st.container(border=True)
+    with container:
+         uploaded_file = st.file_uploader("📁 Chọn file Excel báo cơm", type=["xlsx", "xls"], key="bao_com", accept_multiple_files=False)
+
+    # uploaded_file = st.file_uploader("📁 Chọn file Excel báo cơm", type=["xlsx", "xls"], key="bao_com", accept_multiple_files=False)
     print('upload done!')
     
     if uploaded_file is not None:
